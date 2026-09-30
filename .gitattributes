@@ -1,0 +1,4 @@
+# Keep data files byte-for-byte identical on every OS so the SHA-256
+# checksums in predictions/checksums.txt always match.
+*.csv -text
+predictions/checksums.txt -text
