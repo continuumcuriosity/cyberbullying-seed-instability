@@ -1,0 +1,13 @@
+arm,seed,dev_macro_f1,test_macro_f1
+main,0,0.7148,0.7033
+main,1,0.7110,0.6991
+main,2,0.7145,0.7052
+no_contrastive,0,0.7020,0.6909
+no_contrastive,1,0.7125,0.7032
+no_contrastive,2,0.7117,0.7097
+soft_off,0,0.7176,0.7190
+soft_off,1,0.7246,0.7179
+soft_off,2,0.7256,0.7223
+soft_uw1,0,0.7227,0.7184
+soft_uw1,1,0.7268,0.7189
+soft_uw1,2,0.7216,0.7111

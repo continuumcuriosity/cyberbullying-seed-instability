@@ -22,6 +22,49 @@ is cloned.
 corpus (the flag-count analysis, run-to-run agreement, coverage and majority
 voting) from the twelve prediction files. `make_figures.py` regenerates both figures.
 
+## Matched flag count (`matched/`)
+All twelve runs forced to flag the same number of YouTube comments.
+
+    cd matched
+    python matched_analysis.py        # uses matched/probs/, seconds, no models needed
+
+`matched/probs/` holds per-comment class probabilities for each run,
+regenerated from the twelve checkpoints by `save_probabilities.py` (which
+needs the checkpoints and the Muminovic corpus). Before saving, that script
+checks that the argmax of the new probabilities reproduces each run's
+recorded labels; it did on 100% of comments for all twelve runs.
+
+## Other test sets (`external/`)
+The same twelve runs, scored without retraining on five further test sets:
+Wikipedia personal attacks (Wulczyn et al., 2017), Reddit CAD person-directed
+and identity-directed abuse (Vidgen et al., 2021), Stormfront (de Gibert et
+al., 2018) and the Dynamically Generated Hate Speech test split (Vidgen et
+al., 2021).
+
+    cd external
+    python external_eval.py analyze   # uses external/probs/, writes results/summary.csv
+
+`external/probs/<test set>/<run>.csv` gives row number, gold label and class
+probabilities. `external/subset_ids/<test set>.csv` maps each row number to the
+item's ID in the original dataset, so the exact test sets can be rebuilt. No
+comment text is included; to rebuild the test sets or rescore, download the
+original datasets from their authors and run `external_eval.py build` and
+`external_eval.py score` (see the top of the script).
+
+## Second model family: RoBERTa-base (`external/probs_roberta/`)
+The full design (four configurations x three seeds) repeated with
+`roberta-base` in place of `bert-base-uncased`: same corpus, same split
+(seed 42), same training procedure. `code/roberta_train.ipynb` is the training
+notebook (Kaggle, GPU); set `RUN_LABEL` and `TRAIN_SEED` in the configuration
+cell for each run. Its home-test scores are in `data/ledger_roberta.csv`.
+
+    cd external
+    python external_eval.py analyze --family roberta   # writes results_roberta/summary.csv
+
+The RoBERTa checkpoints (about 6 GB) are not released because of their size;
+`external/probs_roberta/` holds their per-item probabilities on all six test
+sets (YouTube included), so every RoBERTa statistic regenerates without them.
+
 ## Retraining
 `code/gemma-notebook.ipynb` runs on Kaggle with a GPU. It will not run
 locally or in a plain Jupyter install — it depends on Kaggle-specific
